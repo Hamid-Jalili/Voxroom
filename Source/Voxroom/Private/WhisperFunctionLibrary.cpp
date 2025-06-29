@@ -1,8 +1,13 @@
-#include "WhisperFunctionLibrary.h"
+﻿#include "WhisperFunctionLibrary.h"
 #include "Misc/Paths.h"
 #include "HAL/PlatformFileManager.h"
 #include "Misc/FileHelper.h"
-#include "whisper.h"
+#include "WhisperFunctionLibrary.h"
+#include "Misc/Paths.h"
+#include "HAL/PlatformFilemanager.h"
+
+// ✅ FIX THIS LINE:
+#include "whisper.h"  // Do NOT use 'ThirdParty/Whisper/whisper.h'
 
 
 // Include the C++ function from your whisper implementation

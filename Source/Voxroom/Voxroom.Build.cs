@@ -1,4 +1,4 @@
-using UnrealBuildTool;
+﻿using UnrealBuildTool;
 using System.IO;
 
 public class Voxroom : ModuleRules
@@ -12,18 +12,10 @@ public class Voxroom : ModuleRules
             "Core", "CoreUObject", "Engine", "InputCore", "AudioMixer", "DeveloperSettings"
         });
 
-        // Whisper third-party path
-        string WhisperPath = Path.Combine(ModuleDirectory, "../../ThirdParty/Whisper");
+        PrivateDependencyModuleNames.AddRange(new string[] { });
 
-        PublicIncludePaths.AddRange(new string[] {
-            WhisperPath
-        });
-
-        PrivateIncludePaths.AddRange(new string[] {
-            WhisperPath
-        });
-
-        // Add the whisper.cpp to be compiled directly (if needed)
-        RuntimeDependencies.Add(Path.Combine(WhisperPath, "whisper.cpp"));
+        // ✅ Add Whisper folder to include path
+        string WhisperIncludePath = Path.Combine(ModuleDirectory, "../../ThirdParty/Whisper/");
+        PublicIncludePaths.Add(WhisperIncludePath);
     }
 }
