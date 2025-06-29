@@ -2,16 +2,7 @@
 #include "Misc/Paths.h"
 #include "HAL/PlatformFileManager.h"
 #include "Misc/FileHelper.h"
-#include "WhisperFunctionLibrary.h"
-#include "Misc/Paths.h"
-#include "HAL/PlatformFilemanager.h"
-
-// ✅ FIX THIS LINE:
-#include "whisper.h"  // Do NOT use 'ThirdParty/Whisper/whisper.h'
-
-
-// Include the C++ function from your whisper implementation
-#include "ThirdParty/Whisper/whisper.h"
+#include "Voxroom/whisper.h"
 
 FString UWhisperFunctionLibrary::TranscribeFromFile(const FString& FilePath)
 {
