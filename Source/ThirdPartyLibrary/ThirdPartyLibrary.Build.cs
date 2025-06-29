@@ -1,25 +1,35 @@
-﻿using System.IO;
-using UnrealBuildTool;
+﻿using UnrealBuildTool;
+using System.IO;
 
 public class ThirdPartyLibrary : ModuleRules
 {
     public ThirdPartyLibrary(ReadOnlyTargetRules Target) : base(Target)
     {
-        PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
-        Type = ModuleType.External;
+        PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-        string ThirdPartyPath = Path.Combine(ModuleDirectory, "../../ThirdParty/Whisper/");
-        PublicIncludePaths.Add(ThirdPartyPath);
-        PrivateIncludePaths.Add(ThirdPartyPath);
+        PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "include"));
 
-        string WhisperSrcCpp = Path.Combine(ThirdPartyPath, "whisper.cpp");
-        if (File.Exists(WhisperSrcCpp))
+        // Add necessary source files
+        string SourcePath = Path.Combine(ModuleDirectory, "src");
+        string[] SourceFiles = new string[]
         {
-            PrivateDefinitions.Add("WITH_WHISPER_CPP=1");
-            PublicDefinitions.Add("WITH_WHISPER_CPP=1");
+            "ggml.c",
+            "whisper.cpp",
+            "ggml-cpu/ggml_cpu.cpp",
+            "ggml-cpu/arch/x86/repack.cpp",
+            "ggml-cpu/arch/x86/cpu-feats.cpp",
+            "ggml-cpu/arch/x86/quants.c"
+        };
 
-            // ✅ Remove AdditionalSourceFiles — Unreal will include whisper.cpp automatically
-            PublicDependencyModuleNames.Add("Core"); // just in case it's needed
+        foreach (var file in SourceFiles)
+        {
+            string fullPath = Path.Combine(SourcePath, file);
+            if (File.Exists(fullPath))
+            {
+                PrivateAdditionalSourceFiles.Add(fullPath);
+            }
         }
+
+        PrivateDependencyModuleNames.Add("Core");
     }
 }
