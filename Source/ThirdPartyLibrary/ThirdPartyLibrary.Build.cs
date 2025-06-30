@@ -7,29 +7,27 @@ public class ThirdPartyLibrary : ModuleRules
     {
         PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-        PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "include"));
+        PublicIncludePaths.AddRange(new string[] {
+            Path.Combine(ModuleDirectory, "include")
+        });
 
-        // Add necessary source files
-        string SourcePath = Path.Combine(ModuleDirectory, "src");
-        string[] SourceFiles = new string[]
-        {
-            "ggml.c",
-            "whisper.cpp",
-            "ggml-cpu/ggml_cpu.cpp",
-            "ggml-cpu/arch/x86/repack.cpp",
-            "ggml-cpu/arch/x86/cpu-feats.cpp",
-            "ggml-cpu/arch/x86/quants.c"
-        };
+        PrivateIncludePaths.AddRange(new string[] {
+            Path.Combine(ModuleDirectory, "src")
+        });
 
-        foreach (var file in SourceFiles)
+        PublicDependencyModuleNames.AddRange(new string[] {
+            "Core", "CoreUObject", "Engine"
+        });
+
+        PrivateDependencyModuleNames.AddRange(new string[] {
+            "Projects"
+        });
+
+        // Optional: Add any platform-specific settings
+        if (Target.Platform == UnrealTargetPlatform.Win64)
         {
-            string fullPath = Path.Combine(SourcePath, file);
-            if (File.Exists(fullPath))
-            {
-                PrivateAdditionalSourceFiles.Add(fullPath);
-            }
+            // Example: Link static lib or define macros
+            PublicDefinitions.Add("GGML_USE_STD_MUTEX=1");
         }
-
-        PrivateDependencyModuleNames.Add("Core");
     }
 }

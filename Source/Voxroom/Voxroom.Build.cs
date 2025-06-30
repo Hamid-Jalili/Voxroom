@@ -1,6 +1,4 @@
-﻿// Copyright Epic Games, Inc. All Rights Reserved.
-
-using UnrealBuildTool;
+﻿using UnrealBuildTool;
 using System.IO;
 
 public class Voxroom : ModuleRules
@@ -9,26 +7,15 @@ public class Voxroom : ModuleRules
     {
         PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-        PublicDependencyModuleNames.AddRange(new string[] {
-            "Core", "CoreUObject", "Engine", "InputCore"
-        });
+        PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "ThirdPartyLibrary", "src", "ggml-cpu", "include"));
 
-        PrivateDependencyModuleNames.AddRange(new string[] {
-            // Add any private dependencies here
-        });
+        string GGMLPath = Path.Combine(ModuleDirectory, "ThirdPartyLibrary", "src", "ggml-cpu", "src");
+        foreach (string cpp in Directory.EnumerateFiles(GGMLPath, "*.cpp", SearchOption.AllDirectories))
+        {
+            PublicAdditionalLibraries.Add(cpp);
+        }
 
-        // Path to the ThirdPartyLibrary
-        string ThirdPartyPath = Path.Combine(ModuleDirectory, "ThirdPartyLibrary");
-
-        // Add include path
-        PrivateIncludePaths.Add(ThirdPartyPath);
-
-        // Optional: If ggml requires C math defines or optimization flags
-        PublicDefinitions.Add("GGML_USE_STDIO=1"); // define GGML_USE_STDIO if needed
-        PublicDefinitions.Add("GGML_USE_ACCELERATE=0"); // or other GGML config flags
-
-        // Add the ThirdParty source files explicitly if needed
-        // (if Unreal is not detecting them automatically)
-        // E.g., Runtime compilation helpers can go here
+        // Explicitly exclude duplicate paths:
+        PrivateDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
     }
 }
